@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Forgery Risk Report</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 920px; margin: 32px auto; color: #1d1d1d; }
+        h1 { color: #0d4f8b; }
+        .summary, .details, .actions { padding: 22px; border: 1px solid #ddd; border-radius: 12px; background: #f9fbff; margin-bottom: 20px; }
+        .summary strong { display: inline-block; width: 160px; }
+        pre { background: #f4f4f4; padding: 18px; border-radius: 8px; overflow-x: auto; }
+        .tag { display: inline-block; padding: 6px 12px; border-radius: 999px; color: #fff; }
+        .Low { background: #288a34; }
+        .Moderate { background: #d9820b; }
+        .High { background: #b00020; }
+        a.button { display: inline-block; background: #0d4f8b; color: #fff; padding: 12px 18px; border-radius: 8px; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <h1>Fraud Risk Report</h1>
+    <div class="summary">
+        <p><strong>Document:</strong> {{ report.document_name }}</p>
+        <p><strong>Risk level:</strong> <span class="tag {{ report.risk_level }}">{{ report.risk_level }}</span></p>
+        <p><strong>Confidence:</strong> {{ report.confidence * 100 }}%</p>
+    </div>
+    <div class="details">
+        <h2>Key findings</h2>
+        <ul>
+            {% for finding in report.findings %}
+                <li>{{ finding }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="details">
+        <h2>Detected metrics</h2>
+        <pre>{{ json_report }}</pre>
+    </div>
+    <div class="actions">
+        <h2>Recommended actions</h2>
+        <ul>
+            {% for action in report.recommended_actions %}
+                <li>{{ action }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <a class="button" href="/">Analyze another document</a>
+</body>
+</html>

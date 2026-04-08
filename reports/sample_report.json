@@ -1,0 +1,27 @@
+﻿{
+  "document_name": "example_id.png",
+  "risk_level": "Moderate",
+  "confidence": 0.72,
+  "findings": [
+    "High local noise and compression artifacts suggest the image may have been edited.",
+    "Large uniform color regions may indicate copy/paste or patching."
+  ],
+  "recommended_actions": [
+    "Ask the user for a second verification image.",
+    "Review the document for visible discrepancies or alignment issues."
+  ],
+  "details": {
+    "width": 1200,
+    "height": 760,
+    "format": "PNG",
+    "mode": "RGB",
+    "brightness": 132.5,
+    "contrast": 45.3,
+    "edge_density": 0.081,
+    "noise_score": 0.62,
+    "color_uniformity": 0.58,
+    "palette_size": 7,
+    "structure_score": 0.38,
+    "text_density": 0.073
+  }
+}
