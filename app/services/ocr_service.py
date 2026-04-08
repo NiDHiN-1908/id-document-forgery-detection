@@ -11,11 +11,24 @@ _reader = None
 def get_easyocr_reader():
     global _reader
     if _reader is None:
-        _reader = easyocr.Reader(["en"], gpu=False)
+        try:
+            _reader = easyocr.Reader(["en"], gpu=True)
+        except Exception:
+            # Fallback to CPU if GPU not available
+            _reader = easyocr.Reader(["en"], gpu=False)
     return _reader
 
 
 def extract_ocr_data(image: Image.Image) -> Dict[str, float]:
+    # Resize image for faster OCR processing
+    max_size = 1024
+    width, height = image.size
+    if max(width, height) > max_size:
+        ratio = max_size / max(width, height)
+        new_width = int(width * ratio)
+        new_height = int(height * ratio)
+        image = image.resize((new_width, new_height), Image.Resampling.LANCZOS)
+    
     rgb_image = np.asarray(image.convert("RGB"))
     reader = get_easyocr_reader()
     results = reader.readtext(rgb_image, detail=1, paragraph=False)

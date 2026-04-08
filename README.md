@@ -1,40 +1,67 @@
 ﻿# ID Forgery Detector
 
-This prototype accepts an uploaded ID document image, validates the format, analyzes image characteristics for potential tampering, and generates a structured fraud risk report.
+A prototype FastAPI service for analyzing ID document images and generating a structured fraud risk report.
 
-## Architecture
+## Project overview
 
-- `app/main.py` - FastAPI application entrypoint.
-- `app/routes/analyze.py` - Upload page and analysis endpoints.
-- `app/services/` - Image analysis, validation, and report generation logic.
-- `app/models/schemas.py` - Report and validation data models.
-- `app/templates/` - HTML pages for upload and report display.
-- `frontend/app.py` - Simple CLI client to upload an image to the API.
-- `tests/test_api.py` - API tests for upload and validation behavior.
+This repository implements a lightweight forgery detection workflow using image heuristics and OCR signals.
 
-## Key approach
+- `app/main.py` — FastAPI application entry point.
+- `app/routes/analyze.py` — Web form and API endpoints for document analysis.
+- `app/services/` — Image processing, OCR validation, and risk scoring logic.
+- `app/models/schemas.py` — Pydantic models for validation and report payloads.
+- `app/templates/` — Jinja2 views for upload and report rendering.
+- `frontend/app.py` — CLI client to submit an image to the API.
+- `tests/test_api.py` — Integration tests for the application endpoints.
 
-- Validates file extension and MIME type for PNG/JPEG uploads.
-- Uses image heuristics to inspect brightness, edge density, noise, color uniformity, palette size, structure entropy, and text-like density.
-- Combines these signals into a risk score, providing a `Low`, `Moderate`, or `High` forgery risk classification.
-- Generates a human-readable report with findings and recommended actions.
+## Features
 
-## Run locally
+- File validation for JPEG/PNG image uploads.
+- Heuristic image analysis including brightness, contrast, edge density, noise, structure, and color uniformity.
+- OCR inspection to verify text presence, keyword signals, confidence, and text density.
+- Risk scoring engine that classifies documents as `Low`, `Moderate`, or `High` forgery risk.
+- Human-readable findings and recommended next steps.
+- Lightweight health endpoint for monitoring.
 
-1. Install dependencies:
+## Installation
+
+1. Create and activate your Python environment.
+
+   ```bash
+   python -m venv .venv
+   source .venv/bin/activate  # Linux/macOS
+   .venv\Scripts\activate    # Windows
+   ```
+
+2. Install dependencies.
+
    ```bash
    pip install -r requirements.txt
    ```
-2. Start the API:
-   ```bash
-   uvicorn app.main:app --reload --port 8000
-   ```
-3. Open the browser at:
-   ```text
-   http://127.0.0.1:8000/
-   ```
 
-## Sample CLI usage
+## Running locally
+
+Start the API server:
+
+```bash
+python -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
+```
+
+Open the browser at:
+
+```text
+http://127.0.0.1:8000/
+```
+
+The OpenAPI docs are available at:
+
+```text
+http://127.0.0.1:8000/docs
+```
+
+## CLI usage
+
+Use the CLI client to submit an ID image to the API:
 
 ```bash
 python frontend/app.py path/to/id_image.png
@@ -42,13 +69,14 @@ python frontend/app.py path/to/id_image.png
 
 ## Testing
 
-Run tests with:
+Run the API test suite:
 
 ```bash
-pytest tests/test_api.py
+python -m pytest tests/test_api.py
 ```
 
 ## Notes
 
-- This is a prototype for document fraud analysis using heuristic image analysis.
-- The focus is on problem understanding, structured reporting, and prototype delivery rather than production-grade biometric verification.
+- This project is a prototype and should not replace a production identity verification system.
+- For better runtime performance, use a GPU-capable environment or reduce OCR resolution.
+- The app is designed for easy extension and can be integrated into a larger identity verification pipeline.

@@ -3,6 +3,7 @@ from app.models.schemas import FraudReport
 
 
 def build_report(document_name: str, metrics: Dict[str, Any]) -> FraudReport:
+    """Build a structured fraud report from analysis metrics."""
     score, findings = score_metrics(metrics)
     risk_level = classify_risk(score)
     confidence = float(min(0.98, max(0.45, 0.5 + score * 0.5)))

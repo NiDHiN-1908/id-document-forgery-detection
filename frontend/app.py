@@ -7,7 +7,17 @@ API_URL = "http://127.0.0.1:8000/api/analyze"
 
 
 def upload_document(image_path: Path, endpoint: str = API_URL) -> dict:
-    content_type = "image/png" if image_path.suffix.lower() == ".png" else "image/jpeg"
+    if not image_path.exists():
+        raise FileNotFoundError(f"Image file not found: {image_path}")
+
+    suffix = image_path.suffix.lower()
+    if suffix == ".png":
+        content_type = "image/png"
+    elif suffix in {".jpg", ".jpeg"}:
+        content_type = "image/jpeg"
+    else:
+        raise ValueError("Unsupported image format. Please use PNG or JPEG.")
+
     with open(image_path, "rb") as image_file:
         response = requests.post(
             endpoint,
